@@ -2,6 +2,7 @@ package com.example.dialogueextractor
 
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,15 +13,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var statusText: TextView
     private var selectedInputUri: Uri? = null
+    private var selectedInputDisplayName: String? = null
 
     private val pickInputFile = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) {
             selectedInputUri = uri
+            selectedInputDisplayName = queryDisplayName(uri)
             contentResolver.takePersistableUriPermission(
                 uri,
                 android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
-            statusText.text = "已选择输入文件: ${uri.lastPathSegment}"
+            statusText.text = "已选择输入文件: ${selectedInputDisplayName ?: uri.lastPathSegment}"
         } else {
             statusText.text = "未选择文件。"
         }
@@ -64,7 +67,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnExtract.setOnClickListener {
-            createOutputFile.launch("extracted_dialogue.txt")
+            val outputName = buildOutputFileName()
+            createOutputFile.launch(outputName)
+        }
+    }
+
+    private fun buildOutputFileName(): String {
+        val inputName = selectedInputDisplayName ?: return "extracted_dialogue.txt"
+        val dotIndex = inputName.lastIndexOf('.')
+        val baseName = if (dotIndex > 0) inputName.substring(0, dotIndex) else inputName
+        return "${baseName}_extract.txt"
+    }
+
+    private fun queryDisplayName(uri: Uri): String? {
+        return contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
         }
     }
 
