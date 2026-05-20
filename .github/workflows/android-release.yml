@@ -32,6 +32,13 @@ jobs:
       - name: Build Release APK
         run: ./gradlew :app:assembleRelease
 
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+
       - name: Create release tag for manual run
         if: github.event_name == 'workflow_dispatch'
         run: |
@@ -54,3 +61,9 @@ jobs:
           tag_name: ${{ env.RELEASE_TAG }}
           files: app/build/outputs/apk/release/app-release.apk
           generate_release_notes: true
+
+      - name: Print APK locations
+        run: |
+          echo "APK build path: app/build/outputs/apk/release/app-release.apk"
+          echo "Release page: https://github.com/${GITHUB_REPOSITORY}/releases/tag/${RELEASE_TAG}"
+          echo "Workflow artifacts: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"

@@ -17,3 +17,7 @@
 - 触发方式：
   - 推送标签（例如 `v1.0.0`）自动构建并发布 APK 到 Release。
   - 手动触发（workflow_dispatch）会自动生成标签并发布 APK。
+
+### APK 在哪里下载
+- 方式 1（推荐）：仓库页面 **Releases**，打开对应 tag（如 `v1.0.0`），在 **Assets** 下载 `app-release.apk`。
+- 方式 2：进入对应的 **Actions** 运行记录，在 **Artifacts** 下载 `app-release-apk`。
