@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AI 对话提取器"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/descText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择包含 JSON 的 txt 文件，自动提取【用户】与【AI】正文，过滤思维链并导出纯文本。"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btnPick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1) 选择输入文件" />
+
+    <Button
+        android:id="@+id/btnExtract"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2) 提取并保存 txt"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="状态：等待操作"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>
